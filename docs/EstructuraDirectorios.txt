@@ -1,24 +1,50 @@
-WaterManagement/
-├── .github/
-│   └── workflows/              # Opcional: CI/CD o scripts de integración
-├── WS_Central/                # Módulos centrales (Despliegue en Cloud / Railway)
-│   ├── central/                # Aplicación WM_Central
-│   │   ├── Dockerfile
-│   │   └── database/           # Scripts de inicialización SQLite y archivo .db
-│   └── docker-compose.cloud.yml# Orquestador para entorno Railway (Central + Kafka)
-├── WM_WS/           # Módulo Estaciones de Riego (Despliegue en Local)
-│   ├── monitor/                # Aplicación WM_WS_M
-│   │   └── Dockerfile
-│   └── engine/                 # Aplicación WM_WS_E
-│       └── Dockerfile
-├── WM_FO/            # Módulo Operarios de Campo (Despliegue en Local)
-│   ├── Dockerfile
-│   └── config/                 # Ficheros de carga masiva de tareas de riego (.txt/.json)
-├── shared/                     # Librerías o utilidades compartidas (Protocolos, Tramas STX/ETX, etc.)
-|   └── sockets_basicos
-├── docs/                       # Documentación y capturas
-│   ├── prompts/                # Registro obligatorio de Prompts de IA generativa
-│   └── deployment_guide.md     # Guía de despliegue paso a paso
-├── docker-compose.local.yml    # Orquestador local para laboratorios (WS + FO)
-├── .gitignore
-└── README.md
+SD-Water-Management/
+|-- pom.xml                      [AMBOS]      POM padre; cada uno añade su <module>
+|-- .gitignore                   [AMBOS]
+|-- README.md                    [AMBOS]
+|-- .github/                     [GABRIEL]  CI/CD hacia Railway (opcional)
+|
+|-- shared/                      [ILYES]      Protocolo, constantes, estados y mensajes comunes
+|   |-- pom.xml
+|   `-- src/
+|       |-- main/java/es/ua/sd/shared/   Protocol, Frame, InvalidFrameException
+|       `-- test/java/es/ua/sd/shared/   FrameTest
+|
+|-- WM_Central/                  [GABRIEL]  Logica de Central, panel, Kafka en servidor
+|   |-- pom.xml
+|   |-- Dockerfile
+|   |-- database/                [GABRIEL]  Solo scripts SQL; el .db no va a Git
+|   `-- src/main/java/es/ua/sd/central/
+|
+|-- WM_WS/                       [ILYES]      Agregador (packaging pom)
+|   |-- pom.xml
+|   |-- WM_WS_M/                 [ILYES]      Monitor
+|   |   |-- pom.xml
+|   |   |-- Dockerfile
+|   |   `-- src/main/java/es/ua/sd/monitor/
+|   `-- WM_WS_E/                 [ILYES]      Engine
+|       |-- pom.xml
+|       |-- Dockerfile
+|       `-- src/main/java/es/ua/sd/engine/
+|
+|-- WM_FO/                       [ILYES]      Field Operator
+|   |-- pom.xml
+|   |-- Dockerfile
+|   |-- config/                  Fichero de servicios del FO
+|   `-- src/main/java/es/ua/sd/fo/
+|
+|-- docker-compose.ws.yml        [ILYES]      PC lab 2: Monitor + Engine
+|-- docker-compose.fo.yml        [ILYES]      PC lab 1: Field Operators
+|
+`-- docs/
+    |-- prompts/                 [AMBOS]      Cada uno registra sus propios prompts
+    `-- deployment_guide.md      [AMBOS]      Ilyes: parte de laboratorio; Gabriel: cloud
+
+ZONAS DE CONTACTO 
+1. shared/ es de Ilyes pero Central lo usa: avisar antes de cambiar firmas o constantes.
+2. Protocolo Monitor <-> Central: Ilyes cliente, Gabriel servidor. Acordar operaciones y campos.
+3. Topics y mensajes de Kafka: Engine y FO producen/consumen lo mismo que Central.
+
+PENDIENTE DE CONFIRMAR(borrar despues de la aclaracion)
+- .github/ y Railway: asignados al Gabriel.
+- WM_Central: lo crea Gabriel y anade su <module> al pom raiz.
