@@ -6,8 +6,9 @@
   <packaging>pom</packaging>
   <name>waternet</name>
   <!-- Añade aquí un <module> por cada hijo que ya exista -->
-   <modules>
+  <modules>
     <module>shared</module>
+    <module>WM_FO</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
