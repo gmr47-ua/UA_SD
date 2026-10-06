@@ -6,11 +6,9 @@
   <packaging>pom</packaging>
   <name>waternet</name>
   <!-- Añade aquí un <module> por cada hijo que ya exista -->
-  <!-- <modules> -->
-  <!--        <module>shared</module>        -->
-  <!--        <module>WM_FO</module>        -->
-  <!--        <module>WM_WS</module>        -->
-  <!-- </modules> -->
+   <modules>
+    <module>shared</module>
+  </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
@@ -80,7 +78,4 @@
       </plugins>
     </pluginManagement>
   </build>
-  <modules>
-    <module>shared</module>
-  </modules>
 </project>
