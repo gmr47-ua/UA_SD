@@ -1,10 +1,10 @@
 package es.ua.sd.shared;
 
 public class Frame {
-    private Frame(){};
+    private Frame(){}
 
     public static byte[] encode(String data){
-        return null;//temporal
+        throw new UnsupportedOperationException();
     }
     public static byte lrc(byte[] data){
         throw new UnsupportedOperationException();
