@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Hereda del pom general: versión de Java, JUnit, y versiones de las dependencias y plugins -->
+  <parent>
+    <groupId>es.ua.sd</groupId>
+    <artifactId>waternet</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <!-- groupId y version se heredan del padre -->
+  <artifactId>WM_Central</artifactId>
+  <packaging>jar</packaging>
+  <name>WM_Central</name>
+
+  <properties>
+    <!-- Clase con el método main. AJUSTAR al paquete real de tu código -->
+    <main.class>es.ua.sd.central.Main</main.class>
+    <!-- Esta versión no está en el dependencyManagement del padre -->
+    <sqlite.version>3.46.0.0</sqlite.version>
+  </properties>
+
+  <dependencies>
+    <!-- Código común entre módulos (mensajes, protocolo STX/ETX/LRC, etc.) -->
+    <dependency>
+      <groupId>es.ua.sd</groupId>
+      <artifactId>shared</artifactId>
+    </dependency>
+
+    <!-- Cliente de Kafka (productor/consumidor) -->
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+    </dependency>
+
+    <!-- Serialización de mensajes a JSON -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+
+    <!-- Logging (kafka-clients usa slf4j) -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+    </dependency>
+
+    <!-- Base de datos SQLite (obligatoria según el enunciado) -->
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>${sqlite.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- El jar final se llamará WM_Central.jar (nombre obligatorio de la app) -->
+    <finalName>WM_Central</finalName>
+
+    <plugins>
+      <!-- Genera un "fat jar" ejecutable con java -jar. La configuración base viene del padre -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <configuration>
+          <transformers>
+            <!-- Indica la clase principal en el MANIFEST -->
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <mainClass>${main.class}</mainClass>
+            </transformer>
+            <!-- Fusiona los META-INF/services de las dependencias (necesario con JDBC y Kafka) -->
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+          </transformers>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
