@@ -24,3 +24,7 @@ hs_err_pid*
 replay_pid*
 target/
 .vscode/
+
+
+#ignorar el fichero database local para pruebas
+WM_Central/data/

@@ -10,11 +10,53 @@ SD-Water-Management/
 |       |-- main/java/es/ua/sd/shared/   Protocol, Frame, InvalidFrameException
 |       `-- test/java/es/ua/sd/shared/   FrameTest
 |
-|-- WM_Central/                  [GABRIEL]  Logica de Central, panel, Kafka en servidor
-|   |-- pom.xml
-|   |-- Dockerfile
-|   |-- database/                [GABRIEL]  Solo scripts SQL; el .db no va a Git
-|   `-- src/main/java/es/ua/sd/central/
+|--  WM_Central/                [Gabriel]
+    ├── Dockerfile
+    ├── .dockerignore              <- opcional: target/classes, data/, .git
+    ├── pom.xml                    <- con la dependencia sqlite-jdbc
+    ├── data/                      <- solo en local: aquí se crea central.db
+    │   └── central.db             <- ignorado por git
+    │
+    └── src/
+        ├── main/
+        │   ├── java/es/ua/sd/central/
+        │   │   ├── Main.java              <- crea Database, DAOs, servicios y arranca todo
+        │   │   │
+        │   │   ├── net/
+        │   │   │   ├── CentralServer.java     <- ServerSocket, bucle accept
+        │   │   │   └── ClientHandler.java     <- Runnable, un hilo por cliente
+        │   │   │
+        │   │   ├── kafka/                     (*)
+        │   │   │   ├── RequestsConsumer.java      <- irrigation.requests
+        │   │   │   ├── TelemetryConsumer.java     <- ws.telemetry
+        │   │   │   └── CentralProducer.java       <- ws.commands y system.notifications
+        │   │   │
+        │   │   ├── service/
+        │   │   │   ├── OperatorService.java       (*) login/alta
+        │   │   │   ├── StationService.java        (*) alta y estados
+        │   │   │   └── IrrigationService.java     (*) validar, abrir y cerrar riegos
+        │   │   │
+        │   │   ├── db/
+        │   │   │   ├── Database.java
+        │   │   │   ├── OperatorDao.java
+        │   │   │   ├── WaterStationDao.java
+        │   │   │   └── IrrigationDao.java
+        │   │   │
+        │   │   └── model/
+        │   │       ├── Operator.java              <- record
+        │   │       ├── Irrigation.java            <- record
+        │   │       ├── IrrigationResult.java      <- enum
+        │   │       └── StationStatus.java         <- enum
+        │   │
+        │   └── resources/                 <- ojo: corrige "resoruces"
+        │       └── (config si la necesitáis, p. ej. logback.xml)
+        │
+        └── test/java/es/ua/sd/central/
+            └── db/
+                ├── OperatorDaoTest.java       <- con @TempDir y fichero SQLite temporal
+                └── IrrigationDaoTest.java
+
+    target/                            <- generado por Maven, no se toca ni se sube
 |
 |-- WM_WS/                       [ILYES]      Agregador (packaging pom)
 |   |-- pom.xml
@@ -40,7 +82,7 @@ SD-Water-Management/
     |-- prompts/                 [AMBOS]      Cada uno registra sus propios prompts
     `-- deployment_guide.md      [AMBOS]      Ilyes: parte de laboratorio; Gabriel: cloud
 
-ZONAS DE CONTACTO 
+ZONAS DE CONTACTO
 1. shared/ es de Ilyes pero Central lo usa: avisar antes de cambiar firmas o constantes.
 2. Protocolo Monitor <-> Central: Ilyes cliente, Gabriel servidor. Acordar operaciones y campos.
 3. Topics y mensajes de Kafka: Engine y FO producen/consumen lo mismo que Central.

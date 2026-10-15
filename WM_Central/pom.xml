@@ -50,9 +50,9 @@
 
     <!-- Base de datos SQLite (obligatoria según el enunciado) -->
     <dependency>
-      <groupId>org.xerial</groupId>
-      <artifactId>sqlite-jdbc</artifactId>
-      <version>${sqlite.version}</version>
+        <groupId>org.xerial</groupId>
+        <artifactId>sqlite-jdbc</artifactId>
+        <version>3.46.1.0</version>
     </dependency>
   </dependencies>
 
