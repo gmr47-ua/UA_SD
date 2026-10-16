@@ -13,12 +13,24 @@
   <artifactId>WM_WS_E</artifactId>
   <name>WM_WS_E</name>
 
+ 
   <dependencies>
-    <dependency>
-      <groupId>es.ua.sd</groupId>
-      <artifactId>shared</artifactId>
-    </dependency>
+      <dependency>
+          <groupId>es.ua.sd</groupId>
+          <artifactId>shared</artifactId>
+      </dependency>
+
+      <dependency>
+          <groupId>org.apache.kafka</groupId>
+          <artifactId>kafka-clients</artifactId>
+      </dependency>
+
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+      </dependency>
   </dependencies>
+
 
   <build>
     <finalName>WM_WS_E</finalName>
@@ -29,7 +41,7 @@
         <configuration>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>es.ua.sd.engine.Main</mainClass>
+              <mainClass>es.ua.sd.engine.WM_WS_E</mainClass>
             </transformer>
           </transformers>
         </configuration>

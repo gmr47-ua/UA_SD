@@ -29,7 +29,7 @@
         <configuration>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>es.ua.sd.monitor.Main</mainClass>
+              <mainClass>es.ua.sd.monitor.WM_WS_M</mainClass>
             </transformer>
           </transformers>
         </configuration>
