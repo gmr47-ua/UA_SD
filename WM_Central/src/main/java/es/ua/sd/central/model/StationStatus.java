@@ -1,8 +1,4 @@
 package es.ua.sd.central.model;
-
-/**
- * StationStatus
- */
 public enum StationStatus {
-	DESCONECTADA, REPOSO, REGANDO, AVERIA
+	DESCONECTADA, REPOSO, REGANDO, AVERIA, FUERA_DE_SERVICIO
 }

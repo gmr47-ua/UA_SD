@@ -37,6 +37,7 @@ public class Database {
                 """
                 CREATE TABLE IF NOT EXISTS WaterStations (
                         ID     TEXT PRIMARY KEY,
+                        LOCATION TEXT NOT NULL,
                         Status TEXT NOT NULL DEFAULT 'DESCONECTADA'
                 """
             );

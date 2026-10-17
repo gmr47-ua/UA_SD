@@ -43,6 +43,7 @@ SD-Water-Management/
         │   │   │   └── IrrigationDao.java
         │   │   │
         │   │   └── model/
+        │   │       ├── WaterStation.java          <- record
         │   │       ├── Operator.java              <- record
         │   │       ├── Irrigation.java            <- record
         │   │       ├── IrrigationResult.java      <- enum

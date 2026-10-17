@@ -31,4 +31,18 @@ public class OperatorDao {
             }
         }
     }
+
+    public Optional<Operator> findByID(int ID) throws SQLException{
+        String sql = "SELECT ID, Nombre, Email, Password FROM Operators WHERE ID = ?";
+        try(Connection c = db.getConnection()){
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setInt(1, ID);
+            try(ResultSet rs = ps.executeQuery()){
+                if(!rs.next()) return Optional.empty();
+                return Optional.of(new Operator(
+                    rs.getInt("ID"), rs.getString("Nombre"),
+                    rs.getString("Email"),rs.getString("Password")));
+            }
+        }
+    }
 }
